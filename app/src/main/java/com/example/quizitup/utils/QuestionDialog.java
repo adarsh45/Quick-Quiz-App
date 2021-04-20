@@ -19,6 +19,8 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.quizitup.R;
 
+import java.util.ArrayList;
+
 public class QuestionDialog extends DialogFragment {
 
     private Activity activity;
@@ -57,15 +59,21 @@ public class QuestionDialog extends DialogFragment {
 
         btnSaveOptions.setOnClickListener(v-> {
 //            any one of the four edit texts should be non empty
-            if(TextUtils.isEmpty(etOption1.getText()) ||
-                    TextUtils.isEmpty(etOption2.getText()) ||
-                    TextUtils.isEmpty(etOption3.getText()) ||
-                    TextUtils.isEmpty(etOption4.getText())) {
+            if(!(!TextUtils.isEmpty(etOption1.getText()) ||
+                    !TextUtils.isEmpty(etOption2.getText()) ||
+                    !TextUtils.isEmpty(etOption3.getText()) ||
+                    !TextUtils.isEmpty(etOption4.getText()))) {
                 Toast.makeText(activity, "At least one option should be non-empty!", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            String[] options = {etOption1.getText().toString(), etOption2.getText().toString(), etOption3.getText().toString(), etOption4.getText().toString()};
+            String[] rawOptions = {etOption1.getText().toString(), etOption2.getText().toString(), etOption3.getText().toString(), etOption4.getText().toString()};
+            ArrayList<String> options = new ArrayList<>();
+            for (int i = 0; i<4; i++){
+                if(!TextUtils.isEmpty(rawOptions[i])){
+                    options.add(rawOptions[i]);
+                }
+            }
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, options);
             arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinnerOptions.setAdapter(arrayAdapter);

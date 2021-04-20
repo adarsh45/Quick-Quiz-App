@@ -62,7 +62,7 @@ public class HomeActivity extends AppCompatActivity implements ClassAdapter.OnAd
 
     @Override
     public void onClassCardClick(int position) {
-//        TODO: create new activity for showing all quizzes
-        Toast.makeText(this, "Position: "+ position, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(HomeActivity.this, QuizListActivity.class);
+        startActivity(intent);
     }
 }
