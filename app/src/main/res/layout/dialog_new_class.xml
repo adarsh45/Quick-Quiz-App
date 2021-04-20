@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Create New Class"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:layout_margin="16dp"/>
+
+    <EditText
+        android:id="@+id/et_class_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Class Title / Name *"
+        android:layout_margin="16dp"/>
+
+    <Button
+        android:id="@+id/btn_generate_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create Unique Invite Code"
+        android:layout_gravity="center"/>
+
+    <LinearLayout
+        android:id="@+id/layout_copy_code"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <TextView
+            android:id="@+id/tv_invite_code"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:layout_margin="16dp"
+            android:layout_weight="1"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="end"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp">
+            <ImageView
+                android:id="@+id/img_share_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_share_24"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="8dp"/>
+            <ImageView
+                android:id="@+id/img_copy_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_content_copy_24"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="8dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_cancel_new_class"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Close"
+        android:backgroundTint="#a0a0a0"/>
+
+
+</LinearLayout>
