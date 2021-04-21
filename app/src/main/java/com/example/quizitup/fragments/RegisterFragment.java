@@ -130,7 +130,8 @@ public class RegisterFragment extends Fragment {
 
     private void registerStudentToDB(String uid, String name, String email, String roll) {
         DatabaseReference studentRef = FirebaseDatabase.getInstance().getReference("Students");
-        Student student = new Student(uid, name, email, roll);
+//        Student student = new Student(uid, name, email, roll);
+        Student student = new Student();
         studentRef.child(uid).setValue(student).addOnCompleteListener(task-> {
             if (task.isSuccessful()){
                 Log.d(TAG, "registerStudentToDB: success");
