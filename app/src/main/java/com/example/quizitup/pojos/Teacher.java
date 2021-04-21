@@ -1,31 +1,34 @@
 package com.example.quizitup.pojos;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
+@IgnoreExtraProperties
 public class Teacher {
-    private String uid, name, email, subject;
+    private String teacherId, teacherName, email, mobile;
 
     public Teacher(){}
 
-    public Teacher(String uid, String name, String email, String subject) {
-        this.uid = uid;
-        this.name = name;
+    public Teacher(String teacherId, String teacherName, String email, String mobile) {
+        this.teacherId = teacherId;
+        this.teacherName = teacherName;
         this.email = email;
-        this.subject = subject;
+        this.mobile = mobile;
     }
 
-    public String getUid() {
-        return uid;
+    public String getTeacherId() {
+        return teacherId;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
+    public void setTeacherId(String teacherId) {
+        this.teacherId = teacherId;
     }
 
-    public String getName() {
-        return name;
+    public String getTeacherName() {
+        return teacherName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
     }
 
     public String getEmail() {
@@ -36,11 +39,11 @@ public class Teacher {
         this.email = email;
     }
 
-    public String getSubject() {
-        return subject;
+    public String getMobile() {
+        return mobile;
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 }

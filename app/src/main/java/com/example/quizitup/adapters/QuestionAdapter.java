@@ -25,7 +25,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
     @Override
     public QuestionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
-        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_add_quiz,parent,false);
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_question,parent,false);
         return new QuestionViewHolder(view, onQuestionClickListener);
     }
 

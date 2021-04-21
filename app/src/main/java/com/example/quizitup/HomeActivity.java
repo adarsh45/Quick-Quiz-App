@@ -13,12 +13,13 @@ import android.widget.Toast;
 import com.example.quizitup.adapters.ClassAdapter;
 import com.example.quizitup.utils.NewClassDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Arrays;
 
 public class HomeActivity extends AppCompatActivity implements ClassAdapter.OnAddClassClickListener, ClassAdapter.OnClassCardClickListener {
 
-//    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private RecyclerView rvClassesList;
 
     private String[] classesNames = {"", "some", "other", "subject", "and", "again"};
