@@ -42,11 +42,6 @@ public class LoginActivity extends AppCompatActivity {
 
     String mVerificationId;
 
-//    private TabLayout tabLayout;
-//    private TabItem loginTabItem, registerTabItem;
-//    private ViewPager viewPager;
-//    private PageAdapter pageAdapter;
-
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private DatabaseReference studentRef = FirebaseDatabase.getInstance().getReference("Students");
     private DatabaseReference teachersRef = FirebaseDatabase.getInstance().getReference("Teachers");
@@ -74,30 +69,6 @@ public class LoginActivity extends AppCompatActivity {
         btnSendOtp.setOnClickListener(v-> sendOtp());
 
         btnVerifyOtp.setOnClickListener(v-> verifyOtp());
-
-
-//        pageAdapter = new PageAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
-//        viewPager.setAdapter(pageAdapter);
-//
-//        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-//            @Override
-//            public void onTabSelected(TabLayout.Tab tab) {
-//                viewPager.setCurrentItem(tab.getPosition());
-//
-//                if (tab.getPosition() == 0 || tab.getPosition() == 1){
-//                    pageAdapter.notifyDataSetChanged();
-//                }
-//            }
-//
-//            @Override
-//            public void onTabUnselected(TabLayout.Tab tab) { }
-//
-//            @Override
-//            public void onTabReselected(TabLayout.Tab tab) { }
-//        });
-//
-//        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-
     }
 
     private void verifyOtp() {
@@ -134,32 +105,19 @@ public class LoginActivity extends AppCompatActivity {
     PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallback = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
     @Override
     public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-        // This callback will be invoked in two situations:
-        // 1 - Instant verification. In some cases the phone number can be instantly
-        //     verified without needing to send or enter a verification code.
-        // 2 - Auto-retrieval. On some devices Google Play services can automatically
-        //     detect the incoming verification SMS and perform verification without
-        //     user action.
         Log.d(TAG, "onVerificationCompleted:" + phoneAuthCredential);
-
         signInWithPhoneAuthCredential(phoneAuthCredential);
     }
 
     @Override
     public void onCodeSent(@NonNull String verificationId,
                            @NonNull PhoneAuthProvider.ForceResendingToken token) {
-        // The SMS verification code has been sent to the provided phone number, we
-        // now need to ask the user to enter the code and then construct a credential
-        // by combining the code with a verification ID.
         Log.d(TAG, "onCodeSent:" + verificationId);
-
         Toast.makeText(LoginActivity.this, "Code sent successfully!", Toast.LENGTH_SHORT).show();
-
 //        hide mobile layout & show otp layout also hide loading layout
         layoutMobile.setVisibility(View.GONE);
         layoutOtp.setVisibility(View.VISIBLE);
         layoutLoading.setVisibility(View.GONE);
-
         // Save verification ID and resending token so we can use them later
         mVerificationId = verificationId;
 //        mResendToken = token;
@@ -167,9 +125,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onVerificationFailed(@NonNull FirebaseException e) {
-        // This callback is invoked in an invalid request for verification is made,
-        // for instance if the the phone number format is not valid.
-        Log.w(TAG, "onVerificationFailed", e);
+        Log.d(TAG, "onVerificationFailed", e);
 
         if (e instanceof FirebaseAuthInvalidCredentialsException) {
             // Invalid request
@@ -269,7 +225,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-
         etPhone = findViewById(R.id.et_mobile_number);
         etOtp = findViewById(R.id.et_otp);
         btnSendOtp = findViewById(R.id.btn_send_otp);
@@ -278,10 +233,5 @@ public class LoginActivity extends AppCompatActivity {
         layoutMobile = findViewById(R.id.layout_mobile);
         layoutOtp = findViewById(R.id.layout_otp);
         layoutLoading = findViewById(R.id.layout_loading);
-
-//        tabLayout = findViewById(R.id.tab_layout);
-//        loginTabItem = findViewById(R.id.tab_item_login);
-//        registerTabItem = findViewById(R.id.tab_item_register);
-//        viewPager = findViewById(R.id.view_pager);
     }
 }
