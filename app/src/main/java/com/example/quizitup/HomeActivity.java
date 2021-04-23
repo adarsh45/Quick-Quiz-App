@@ -173,7 +173,7 @@ public class HomeActivity extends AppCompatActivity implements ClassAdapter.OnAd
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         tvName = findViewById(R.id.tv_welcome_name);
         rvClassesList = findViewById(R.id.rv_classes_list);
@@ -202,7 +202,8 @@ public class HomeActivity extends AppCompatActivity implements ClassAdapter.OnAd
     @Override
     public void onClassCardClick(int position) {
         Intent intent = new Intent(HomeActivity.this, QuizListActivity.class);
-        intent.putExtra("classData", classesList.get(position));
+        intent.putExtra("classInviteCode", classesList.get(position).getInviteCode());
+        intent.putExtra("classTitle", classesList.get(position).getClassTitle());
         startActivity(intent);
     }
 

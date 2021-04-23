@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthResult;
@@ -52,15 +53,6 @@ public class LoginActivity extends AppCompatActivity {
     private EditText etPhone, etOtp;
     private Button btnSendOtp, btnVerifyOtp;
     private LinearLayout layoutLoading, layoutMobile, layoutOtp;
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null){
-            checkIfRegistered();
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,18 +1,15 @@
 package com.example.quizitup.pojos;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.google.firebase.database.IgnoreExtraProperties;
 
-import java.util.HashMap;
+import java.util.Map;
 
 @IgnoreExtraProperties
-public class Class implements Parcelable {
+public class Class {
 
     private String inviteCode, classTitle, createdBy, teacherName;
-    private HashMap<String, Quiz> quizzesMap;
-    private HashMap<String, String> studentsEnrolledMap;
+    private Map<String, Quiz> quizzesMap;
+    private Map<String, String> studentsEnrolledMap;
 
     public Class(){}
 
@@ -21,6 +18,15 @@ public class Class implements Parcelable {
         this.classTitle = classTitle;
         this.createdBy = createdBy;
         this.teacherName = teacherName;
+    }
+
+    public Class(String inviteCode, String classTitle, String createdBy, String teacherName, Map<String, Quiz> quizzesMap, Map<String, String> studentsEnrolledMap) {
+        this.inviteCode = inviteCode;
+        this.classTitle = classTitle;
+        this.createdBy = createdBy;
+        this.teacherName = teacherName;
+        this.quizzesMap = quizzesMap;
+        this.studentsEnrolledMap = studentsEnrolledMap;
     }
 
     public String getInviteCode() {
@@ -55,29 +61,29 @@ public class Class implements Parcelable {
         this.teacherName = teacherName;
     }
 
-    public HashMap<String, Quiz> getQuizzesMap() {
+    public Map<String, Quiz> getQuizzesMap() {
         return quizzesMap;
     }
 
-    public void setQuizzesMap(HashMap<String, Quiz> quizzesMap) {
+    public void setQuizzesMap(Map<String, Quiz> quizzesMap) {
         this.quizzesMap = quizzesMap;
     }
 
-    public HashMap<String, String> getStudentsEnrolledMap() {
+    public Map<String, String> getStudentsEnrolledMap() {
         return studentsEnrolledMap;
     }
 
-    public void setStudentsEnrolledMap(HashMap<String, String> studentsEnrolledMap) {
+    public void setStudentsEnrolledMap(Map<String, String> studentsEnrolledMap) {
         this.studentsEnrolledMap = studentsEnrolledMap;
     }
 
-    public static class Quiz{
+    public static class Quiz {
         private String quizId, quizTitle, status, duration;
-        private HashMap<String, Question> questionMap;
+        private Map<String, Question> questionMap;
 
         public Quiz(){}
 
-        public Quiz(String quizId, String quizTitle, String status, String duration, HashMap<String, Question> questionMap) {
+        public Quiz(String quizId, String quizTitle, String status, String duration, Map<String, Question> questionMap) {
             this.quizId = quizId;
             this.quizTitle = quizTitle;
             this.status = status;
@@ -117,14 +123,13 @@ public class Class implements Parcelable {
             this.duration = duration;
         }
 
-        public HashMap<String, Question> getQuestionMap() {
+        public Map<String, Question> getQuestionMap() {
             return questionMap;
         }
 
-        public void setQuestionMap(HashMap<String, Question> questionMap) {
+        public void setQuestionMap(Map<String, Question> questionMap) {
             this.questionMap = questionMap;
         }
-
 
     }
 
@@ -201,43 +206,4 @@ public class Class implements Parcelable {
 
     }
 
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.inviteCode);
-        dest.writeString(this.classTitle);
-        dest.writeString(this.createdBy);
-        dest.writeString(this.teacherName);
-    }
-
-    public void readFromParcel(Parcel source) {
-        this.inviteCode = source.readString();
-        this.classTitle = source.readString();
-        this.createdBy = source.readString();
-        this.teacherName = source.readString();
-    }
-
-    protected Class(Parcel in) {
-        this.inviteCode = in.readString();
-        this.classTitle = in.readString();
-        this.createdBy = in.readString();
-        this.teacherName = in.readString();
-    }
-
-    public static final Creator<Class> CREATOR = new Creator<Class>() {
-        @Override
-        public Class createFromParcel(Parcel source) {
-            return new Class(source);
-        }
-
-        @Override
-        public Class[] newArray(int size) {
-            return new Class[size];
-        }
-    };
 }

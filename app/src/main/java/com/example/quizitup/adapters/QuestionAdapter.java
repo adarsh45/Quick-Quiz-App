@@ -15,13 +15,14 @@ import com.example.quizitup.pojos.Class;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.QuestionViewHolder> {
 
-    private HashMap<String, Class.Question> questionsList;
+    private Map<String, Class.Question> questionsList;
     private OnQuestionClickListener onQuestionClickListener;
 
-    public QuestionAdapter(HashMap<String, Class.Question> questionsList, OnQuestionClickListener onQuestionClickListener){
+    public QuestionAdapter(Map<String, Class.Question> questionsList, OnQuestionClickListener onQuestionClickListener){
         this.questionsList = questionsList;
         this.onQuestionClickListener = onQuestionClickListener;
     }

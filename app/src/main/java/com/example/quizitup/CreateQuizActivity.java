@@ -1,5 +1,6 @@
 package com.example.quizitup;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,11 +20,13 @@ import com.example.quizitup.adapters.QuestionAdapter;
 import com.example.quizitup.pojos.Class;
 import com.example.quizitup.utils.QuestionDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 public class CreateQuizActivity extends AppCompatActivity implements QuestionAdapter.OnQuestionClickListener {
 
@@ -36,11 +39,10 @@ public class CreateQuizActivity extends AppCompatActivity implements QuestionAda
     public static RecyclerView rvQuestionsList;
     private FloatingActionButton fabAddQuestion;
 
-    private Class classData;
+    private String classInviteCode, quizId;
     private Class.Quiz quizData;
     public static QuestionAdapter questionAdapter;
-    private HashMap<String, Class.Quiz> quizzesList;
-    public static HashMap<String, Class.Question> questionsList = new HashMap<>();
+    public static Map<String, Class.Question> questionsList = new HashMap<>();
     private String[] quizStatusOptions = {"Create Mode", "Published", "Closed"};
 
     @Override
@@ -50,7 +52,6 @@ public class CreateQuizActivity extends AppCompatActivity implements QuestionAda
 
         initViews();
         getClassData();
-        setupRV();
 
         ArrayAdapter<String> statusOptionsAdapter = new ArrayAdapter<>(CreateQuizActivity.this, android.R.layout.simple_spinner_item, quizStatusOptions);
         statusOptionsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -69,19 +70,10 @@ public class CreateQuizActivity extends AppCompatActivity implements QuestionAda
             String quizDuration = etQuizDuration.getText().toString();
             String quizStatus = quizStatusOptions[spinnerStatus.getSelectedItemPosition()];
 
-            if (quizzesList == null || quizzesList.isEmpty()){
-                Class.Quiz quizData = new Class.Quiz(String.valueOf(0), quizTitle, quizStatus, quizDuration, questionsList);
-                quizzesList.put("0_id", quizData);
-            } else {
-                Class.Quiz quizData = new Class.Quiz(quizzesList.get(String.valueOf(quizzesList.size() - 1)).getQuizId(), quizTitle, quizStatus, quizDuration, questionsList);
-                quizzesList.put(quizData.getQuizId(), quizData);
-            }
+            Class.Quiz quizData = new Class.Quiz( quizId, quizTitle, quizStatus, quizDuration, questionsList);
 
-            classData.setQuizzesMap(quizzesList);
-
-            Log.d(TAG, "onCreate: INVITE CODE: " + classData.getInviteCode());
-
-            FirebaseDatabase.getInstance().getReference("Classes").child(classData.getInviteCode()).setValue(classData)
+            FirebaseDatabase.getInstance().getReference("Classes")
+                    .child(classInviteCode).child("quizzesMap").child(quizId).setValue(quizData)
                     .addOnCompleteListener(task->{
                        if (task.isSuccessful()){
                            Toast.makeText(this, "Quiz added successfully!", Toast.LENGTH_SHORT).show();
@@ -99,16 +91,39 @@ public class CreateQuizActivity extends AppCompatActivity implements QuestionAda
     }
 
     private void getClassData() {
-        classData = getIntent().getParcelableExtra("classData");
-        if (classData != null){
-            if (classData.getQuizzesMap() == null){
-                quizzesList = new HashMap<>();
-            } else {
-                quizzesList = classData.getQuizzesMap();
-            }
-        } else {
-            quizzesList = new HashMap<>();
-        }
+        classInviteCode = getIntent().getStringExtra("classInviteCode");
+        quizId = getIntent().getStringExtra("quizData");
+
+        FirebaseDatabase.getInstance().getReference("Classes")
+                .child(classInviteCode).child("quizzesMap").child(quizId)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()){
+                            quizData = snapshot.getValue(Class.Quiz.class);
+                            questionsList = quizData.getQuestionMap();
+                            etQuizTitle.setText(quizData.getQuizTitle());
+                            etQuizDuration.setText(quizData.getDuration());
+                            int spinnerPosition = 0;
+                            for(int i=0; i<quizStatusOptions.length; i++){
+                                if (quizStatusOptions[i].equals(quizData.getStatus())){
+                                    spinnerPosition = i;
+                                }
+                            }
+                            spinnerStatus.setSelection(spinnerPosition);
+                            tvQueCount.setText(String.valueOf(questionsList.size()));
+                            tvNoQuestions.setVisibility(View.GONE);
+                            rvQuestionsList.setVisibility(View.VISIBLE);
+                        }
+                        setupRV();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.d(TAG, "onCancelled: " + error.getMessage());
+                        Toast.makeText(CreateQuizActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void setupRV() {

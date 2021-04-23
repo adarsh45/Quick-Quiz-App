@@ -5,28 +5,56 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".LoginActivity"
+    android:background="@color/faint_blue"
+    android:backgroundTint="@color/faint_blue">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/cardView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Login"
+            android:textColor="@color/faint_gray"
+            android:textSize="28sp" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/layout_loading"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/cardView"
+        android:visibility="gone"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/cardView">
 
         <ProgressBar
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/main_blue"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Please wait! We are loading data!"
+            android:textColor="@color/gray"
             android:textSize="18sp" />
     </LinearLayout>
 
@@ -46,7 +74,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="16dp"
+            android:backgroundTint="@color/faint_blue"
+            android:background="@color/faint_blue">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -59,6 +89,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="+91"
+                    android:textColor="@color/black"
                     android:textSize="20sp" />
 
                 <EditText
@@ -67,6 +98,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:hint="Mobile Number"
+                    android:textColorHint="@color/gray"
+                    android:textColor="@color/black"
                     android:inputType="phone"
                     android:padding="12dp"
                     android:textSize="20sp" />
@@ -80,9 +113,8 @@
                 android:layout_marginVertical="16dp"
                 android:padding="16dp"
                 android:text="Send OTP"
-                android:background="@color/purple_700"
-                android:textColor="@color/white"
-                android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
+                android:background="@color/main_blue"
+                android:textColor="@color/white"/>
 
         </LinearLayout>
 
@@ -92,7 +124,9 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp"
-            android:visibility="gone">
+            android:visibility="gone"
+            android:backgroundTint="@color/faint_blue"
+            android:background="@color/faint_blue">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -100,13 +134,14 @@
                 android:layout_marginVertical="16dp"
                 android:orientation="horizontal">
 
-
                 <EditText
                     android:id="@+id/et_otp"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:hint="Enter OTP"
+                    android:textColorHint="@color/gray"
+                    android:textColor="@color/black"
                     android:inputType="number"
                     android:padding="12dp"
                     android:textSize="20sp" />
@@ -120,9 +155,8 @@
                 android:layout_marginVertical="16dp"
                 android:padding="16dp"
                 android:text="Verify OTP"
-                android:background="@color/purple_700"
-                android:textColor="@color/white"
-                android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
+                android:background="@color/main_blue"
+                android:textColor="@color/white"/>
 
         </LinearLayout>
 

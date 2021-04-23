@@ -3,6 +3,8 @@ package com.example.quizitup.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,14 +13,15 @@ import com.example.quizitup.R;
 import com.example.quizitup.pojos.Class;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class QuizListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private HashMap<String, Class.Quiz> quizList;
+    private Map<String, Class.Quiz> quizList;
     private OnAddQuizClickListener onAddQuizClickListener;
     private OnQuizCardClickListener onQuizCardClickListener;
 
-    public QuizListAdapter(HashMap<String, Class.Quiz> quizList, OnAddQuizClickListener onAddQuizClickListener, OnQuizCardClickListener onQuizCardClickListener){
+    public QuizListAdapter(Map<String, Class.Quiz> quizList, OnAddQuizClickListener onAddQuizClickListener, OnQuizCardClickListener onQuizCardClickListener){
         this.quizList = quizList;
         this.onAddQuizClickListener = onAddQuizClickListener;
         this.onQuizCardClickListener = onQuizCardClickListener;
@@ -50,6 +53,20 @@ public class QuizListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if(holder.getItemViewType() != 0){
 //            this is any item other than last
+            Class.Quiz quizData = quizList.get(position + "_id");
+            ((QuizCardViewHolder)holder).tvQuizTitle.setText(quizData.getQuizTitle());
+            ((QuizCardViewHolder)holder).tvQuestionsCount.setText("Questions: " + quizData.getQuestionMap().size());
+            ((QuizCardViewHolder)holder).tvQuizStatus.setText(quizData.getStatus());
+
+            if (quizData.getStatus().equals("Create Mode")){
+                ((QuizCardViewHolder) holder).imgQuizStatus.setImageResource(R.drawable.ic_baseline_pending_24);
+            }
+            if (quizData.getStatus().equals("Published")){
+                ((QuizCardViewHolder) holder).imgQuizStatus.setImageResource(R.drawable.ic_check_circle_solid);
+            }
+            if (quizData.getStatus().equals("Closed")){
+                ((QuizCardViewHolder) holder).imgQuizStatus.setImageResource(R.drawable.ic_baseline_cancel_24);
+            }
         }
     }
 
@@ -61,8 +78,16 @@ public class QuizListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public static class QuizCardViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         public OnQuizCardClickListener onQuizCardClickListener;
+        public TextView tvQuizTitle, tvQuestionsCount, tvQuizStatus;
+        public ImageView imgQuizStatus;
         public QuizCardViewHolder(@NonNull View itemView, OnQuizCardClickListener onQuizCardClickListener) {
             super(itemView);
+
+            tvQuizTitle = itemView.findViewById(R.id.tv_rv_quiz_title);
+            tvQuestionsCount = itemView.findViewById(R.id.tv_rv_quiz_questions);
+            tvQuizStatus = itemView.findViewById(R.id.tv_rv_quiz_status);
+            imgQuizStatus = itemView.findViewById(R.id.img_rv_quiz_status);
+
             this.onQuizCardClickListener = onQuizCardClickListener;
             itemView.setOnClickListener(this);
         }

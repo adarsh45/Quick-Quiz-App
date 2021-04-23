@@ -6,6 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeActivity"
+    android:backgroundTint="@color/faint_blue"
+    android:background="@color/faint_blue"
     android:id="@+id/layout_drawer_home">
 
     <LinearLayout
@@ -24,13 +26,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Welcome,&#160;"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:textColor="@color/main_blue"/>
 
             <TextView
                 android:id="@+id/tv_welcome_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:textColor="@color/main_blue" />
 
         </LinearLayout>
 

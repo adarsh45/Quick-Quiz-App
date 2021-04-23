@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".QuizListActivity">
+    tools:context=".QuizListActivity"
+    android:background="@color/faint_blue"
+    android:backgroundTint="@color/faint_blue">
 
     <TextView
         android:id="@+id/tv_class_heading"
@@ -12,6 +14,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="Class Title"
+        android:textColor="@color/gray"
         android:textSize="22sp"
         android:layout_marginVertical="16dp"
         app:layout_constraintEnd_toEndOf="parent"

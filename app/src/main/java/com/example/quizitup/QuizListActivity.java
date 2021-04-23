@@ -18,21 +18,20 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
 
 public class QuizListActivity extends AppCompatActivity implements QuizListAdapter.OnAddQuizClickListener, QuizListAdapter.OnQuizCardClickListener {
 
     private TextView tvClassHeading;
     private RecyclerView rvQuizList;
 
+    private String classInviteCode;
     private Class classData;
-    private HashMap<String, Class.Quiz> quizzesList;
+    private Map<String, Class.Quiz> quizzesList = new HashMap<>();
+    QuizListAdapter adapter;
 
     private static final String TAG = "QuizListActivity";
-    String[] quizList = {"Quiz 1", "Test Quiz 2", "Sample quiz!"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,23 +41,22 @@ public class QuizListActivity extends AppCompatActivity implements QuizListAdapt
         initViews();
         getClassData();
         getQuizzes();
-        setupRV();
     }
 
     private void getQuizzes() {
-        FirebaseDatabase.getInstance().getReference("Classes").child(classData.getInviteCode())
+        FirebaseDatabase.getInstance().getReference("Classes")
+                .child(classInviteCode).child("quizzesMap")
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()){
+                            Log.d(TAG, "onDataChange: " + snapshot.toString());
                             for (DataSnapshot snap: snapshot.getChildren()){
-                                classData = snap.getValue(Class.class);
-
-                            }
-                            if (classData != null && classData.getQuizzesMap() != null){
-                                quizzesList = classData.getQuizzesMap();
+                                Class.Quiz quizData = snap.getValue(Class.Quiz.class);
+                                quizzesList.put(quizData.getQuizId(), quizData);
                             }
                         }
+                        setupRV();
                     }
 
                     @Override
@@ -70,19 +68,13 @@ public class QuizListActivity extends AppCompatActivity implements QuizListAdapt
     }
 
     private void getClassData() {
-        classData = getIntent().getParcelableExtra("classData");
-        if (classData != null){
-            tvClassHeading.setText(classData.getClassTitle());
-            if (classData.getQuizzesMap() != null){
-                quizzesList = classData.getQuizzesMap();
-            } else {
-                quizzesList = new HashMap<>();
-            }
-        }
+        classInviteCode = getIntent().getStringExtra("classInviteCode");
+        tvClassHeading.setText(getIntent().getStringExtra("classTitle"));
     }
 
     private void setupRV() {
-        QuizListAdapter adapter = new QuizListAdapter(quizzesList,this::onAddQuizClick, this::onQuizClick);
+        quizzesList.put("dummy",new Class.Quiz());
+        adapter = new QuizListAdapter(quizzesList,this::onAddQuizClick, this::onQuizClick);
         rvQuizList.setAdapter(adapter);
         rvQuizList.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -95,16 +87,18 @@ public class QuizListActivity extends AppCompatActivity implements QuizListAdapt
     @Override
     public void onAddQuizClick(int position) {
         Intent intent = new Intent(QuizListActivity.this, CreateQuizActivity.class);
-        intent.putExtra("classData", classData);
-        Log.d(TAG, "onQuizClick: "  + classData);
+        intent.putExtra("classInviteCode", classInviteCode);
+        intent.putExtra("quizData", position + "_id");
+        Log.d(TAG, "onQuizClick: "  + classInviteCode);
         startActivity(intent);
     }
 
     @Override
     public void onQuizClick(int position) {
         Intent intent = new Intent(QuizListActivity.this, CreateQuizActivity.class);
-        intent.putExtra("classData", classData);
-        Log.d(TAG, "onQuizClick: "  + classData);
+        intent.putExtra("classInviteCode", classInviteCode);
+        intent.putExtra("quizData", position + "_id");
+        Log.d(TAG, "onQuizClick: "  + classInviteCode);
         startActivity(intent);
     }
 }

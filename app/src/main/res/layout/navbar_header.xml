@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="200dp"
     android:orientation="vertical"
-    android:background="@color/purple_500"
+    android:background="@color/main_blue"
     android:paddingVertical="20dp">
 
     <LinearLayout
@@ -28,7 +28,7 @@
             android:background="@drawable/circle_logo"
             android:gravity="center"
             android:text="T"
-            android:textSize="28dp" />
+            android:textSize="28sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -49,7 +49,7 @@
                 android:id="@+id/tv_nav_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="someone@gmail.com"
+                android:text="someone@email.com"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
 
@@ -57,7 +57,7 @@
                 android:id="@+id/tv_nav_mobile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="+919825367510"
+                android:text="+911122334455"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
 
