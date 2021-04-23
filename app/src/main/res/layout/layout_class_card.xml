@@ -9,7 +9,7 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="180dp"
         android:background="@color/dark_gray"
         android:src="@drawable/img_code_crop"
         android:layout_gravity="center"
@@ -44,7 +44,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Students enrolled:&#160;"
+                    android:text="Students:&#160;"
                     android:layout_gravity="center"/>
                 <TextView
                     android:id="@+id/tv_students_enrolled"
@@ -62,13 +62,13 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_person_pin_24"
+                    android:src="@drawable/ic_baseline_psychology_24"
                     android:padding="2dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Total Quizzes:&#160;"
+                    android:text="Quizzes:&#160;"
                     android:layout_gravity="center"/>
                 <TextView
                     android:id="@+id/tv_total_quizzes"

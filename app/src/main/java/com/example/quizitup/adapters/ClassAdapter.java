@@ -3,21 +3,23 @@ package com.example.quizitup.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.quizitup.R;
+import com.example.quizitup.pojos.Class;
 
 import java.util.List;
 
 public class ClassAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<String> classes;
+    private List<Class> classes;
     private OnAddClassClickListener onAddClassClickListener;
     private OnClassCardClickListener onClassCardClickListener;
 
-    public ClassAdapter(List<String> classes, OnAddClassClickListener onAddClassClickListener, OnClassCardClickListener onClassCardClickListener){
+    public ClassAdapter(List<Class> classes, OnAddClassClickListener onAddClassClickListener, OnClassCardClickListener onClassCardClickListener){
         this.classes = classes;
         this.onAddClassClickListener = onAddClassClickListener;
         this.onClassCardClickListener = onClassCardClickListener;
@@ -49,6 +51,7 @@ public class ClassAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if(holder.getItemViewType() != 0){
 //            this is any item other than last
+            ((ClassCardViewHolder) holder).tvClassTitle.setText(classes.get(position).getClassTitle());
         }
     }
 
@@ -60,9 +63,13 @@ public class ClassAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public static class ClassCardViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         public OnClassCardClickListener onClassCardClickListener;
+        public TextView tvClassTitle, tvStudentsCount, tvQuizzesCount;
         public ClassCardViewHolder(@NonNull View itemView, OnClassCardClickListener onClassCardClickListener) {
             super(itemView);
             this.onClassCardClickListener = onClassCardClickListener;
+            tvClassTitle = itemView.findViewById(R.id.tv_class_title);
+            tvStudentsCount = itemView.findViewById(R.id.tv_students_enrolled);
+            tvQuizzesCount = itemView.findViewById(R.id.tv_total_quizzes);
             itemView.setOnClickListener(this);
         }
 

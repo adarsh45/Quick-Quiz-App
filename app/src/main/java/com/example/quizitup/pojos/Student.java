@@ -1,11 +1,14 @@
 package com.example.quizitup.pojos;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.HashMap;
 
 @IgnoreExtraProperties
-public class Student {
+public class Student implements Parcelable {
 
     private String studentId, studentName, email, mobile;
     private HashMap<String, String> enrolledClasses;
@@ -29,6 +32,8 @@ public class Student {
         this.enrolledClasses = enrolledClasses;
         this.attemptedQuizzesMap = attemptedQuizzesMap;
     }
+
+
 
     public String getStudentId() {
         return studentId;
@@ -149,4 +154,48 @@ public class Student {
         }
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.studentId);
+        dest.writeString(this.studentName);
+        dest.writeString(this.email);
+        dest.writeString(this.mobile);
+        dest.writeSerializable(this.enrolledClasses);
+        dest.writeSerializable(this.attemptedQuizzesMap);
+    }
+
+    public void readFromParcel(Parcel source) {
+        this.studentId = source.readString();
+        this.studentName = source.readString();
+        this.email = source.readString();
+        this.mobile = source.readString();
+        this.enrolledClasses = (HashMap<String, String>) source.readSerializable();
+        this.attemptedQuizzesMap = (HashMap<String, AttemptedQuiz>) source.readSerializable();
+    }
+
+    protected Student(Parcel in) {
+        this.studentId = in.readString();
+        this.studentName = in.readString();
+        this.email = in.readString();
+        this.mobile = in.readString();
+        this.enrolledClasses = (HashMap<String, String>) in.readSerializable();
+        this.attemptedQuizzesMap = (HashMap<String, AttemptedQuiz>) in.readSerializable();
+    }
+
+    public static final Parcelable.Creator<Student> CREATOR = new Parcelable.Creator<Student>() {
+        @Override
+        public Student createFromParcel(Parcel source) {
+            return new Student(source);
+        }
+
+        @Override
+        public Student[] newArray(int size) {
+            return new Student[size];
+        }
+    };
 }

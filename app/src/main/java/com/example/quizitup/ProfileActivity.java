@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -14,8 +13,8 @@ import android.widget.Toast;
 
 import com.example.quizitup.pojos.Student;
 import com.example.quizitup.pojos.Teacher;
+import com.example.quizitup.utils.Utils;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -75,6 +74,10 @@ public class ProfileActivity extends AppCompatActivity {
             if (task.isSuccessful()){
                 Log.d(TAG, "registerStudentToDB: success");
                 Intent homeIntent = new Intent(ProfileActivity.this, HomeActivity.class);
+                homeIntent.putExtra("origin", Utils.STUDENT_DATA);
+                Log.d(TAG, "onDataChange: " + student.getStudentName());
+                homeIntent.putExtra("studentData", student);
+                startActivity(homeIntent);
                 startActivity(homeIntent);
                 finish();
             } else {
@@ -92,6 +95,10 @@ public class ProfileActivity extends AppCompatActivity {
             if (task.isSuccessful()){
                 Log.d(TAG, "registerTeacherToDB: success");
                 Intent homeIntent = new Intent(ProfileActivity.this, HomeActivity.class);
+                homeIntent.putExtra("origin", Utils.TEACHER_DATA);
+                Log.d(TAG, "onDataChange: " + teacher.getTeacherName());
+                homeIntent.putExtra("teacherData", teacher);
+                startActivity(homeIntent);
                 startActivity(homeIntent);
                 finish();
             } else {

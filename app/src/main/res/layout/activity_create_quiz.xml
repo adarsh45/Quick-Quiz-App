@@ -65,6 +65,7 @@
                     android:textSize="18sp" />
 
                 <EditText
+                    android:id="@+id/et_quiz_duration"
                     android:layout_width="75dp"
                     android:layout_height="wrap_content"
                     android:hint="duration"
@@ -100,6 +101,7 @@
         </LinearLayout>
 
         <Button
+            android:id="@+id/btn_save_quiz"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -125,12 +127,12 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_questions_list"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginVertical="8dp"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"/>
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

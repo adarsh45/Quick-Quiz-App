@@ -8,16 +8,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.quizitup.R;
+import com.example.quizitup.pojos.Class;
 
-import java.util.List;
+import java.util.HashMap;
 
 public class QuizListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<String> quizList;
+    private HashMap<String, Class.Quiz> quizList;
     private OnAddQuizClickListener onAddQuizClickListener;
     private OnQuizCardClickListener onQuizCardClickListener;
 
-    public QuizListAdapter(List<String> quizList, OnAddQuizClickListener onAddQuizClickListener, OnQuizCardClickListener onQuizCardClickListener){
+    public QuizListAdapter(HashMap<String, Class.Quiz> quizList, OnAddQuizClickListener onAddQuizClickListener, OnQuizCardClickListener onQuizCardClickListener){
         this.quizList = quizList;
         this.onAddQuizClickListener = onAddQuizClickListener;
         this.onQuizCardClickListener = onQuizCardClickListener;

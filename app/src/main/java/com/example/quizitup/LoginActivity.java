@@ -14,6 +14,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.quizitup.pojos.Student;
+import com.example.quizitup.pojos.Teacher;
+import com.example.quizitup.utils.Utils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabItem;
@@ -166,6 +169,8 @@ public class LoginActivity extends AppCompatActivity {
         Query studentExistsQuery = studentRef.orderByChild("studentId").equalTo(uid);
         Query teacherExistsQuery = teachersRef.orderByChild("teacherId").equalTo(uid);
 
+        Log.d(TAG, "checkIfRegistered: AT LEAST CHECKING IF REGISTERED");
+
 //        here nested code is used that is second query is called inside of first query's else part
 //        and final default code is called inside else part of second query
         /*
@@ -180,9 +185,16 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
+                    Student student = new Student();
+                    for (DataSnapshot snap: snapshot.getChildren()){
+                        student = snap.getValue(Student.class);
+                    }
                     layoutLoading.setVisibility(View.GONE);
                     Log.d(TAG, "onDataChange: " + snapshot.toString());
                     Intent homeIntent = new Intent(LoginActivity.this, HomeActivity.class);
+                    homeIntent.putExtra("origin", Utils.STUDENT_DATA);
+                    Log.d(TAG, "onDataChange: " + student.getStudentName());
+                    homeIntent.putExtra("studentData", student);
                     startActivity(homeIntent);
                     finish();
                 } else {
@@ -192,8 +204,15 @@ public class LoginActivity extends AppCompatActivity {
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             layoutLoading.setVisibility(View.GONE);
                             if (snapshot.exists()){
+                                Teacher teacher = new Teacher();
+                                for (DataSnapshot snap: snapshot.getChildren()){
+                                    teacher = snap.getValue(Teacher.class);
+                                }
                                 Log.d(TAG, "onDataChange: " + snapshot.toString());
                                 Intent homeIntent = new Intent(LoginActivity.this, HomeActivity.class);
+                                homeIntent.putExtra("origin", Utils.TEACHER_DATA);
+                                Log.d(TAG, "onDataChange: " + teacher.getTeacherName());
+                                homeIntent.putExtra("teacherData", teacher);
                                 startActivity(homeIntent);
                                 finish();
                             } else {
