@@ -1,6 +1,7 @@
 package com.example.quizitup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -36,7 +37,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class HomeActivity extends AppCompatActivity implements ClassAdapter.OnAddClassClickListener, ClassAdapter.OnClassCardClickListener {
+public class HomeActivity extends AppCompatActivity implements ClassAdapter.OnClassCardClickListener, ClassAdapter.OnAddClassClickListener {
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private DatabaseReference classesRef = FirebaseDatabase.getInstance().getReference("Classes");
@@ -53,18 +54,10 @@ public class HomeActivity extends AppCompatActivity implements ClassAdapter.OnAd
 
     private static final String TAG = "HomeActivity";
 
-    private String[] classesNames = {"", "some", "other", "subject", "and", "again"};
     private ArrayList<Class> classesList = new ArrayList<>();
 
     private Student student;
     private Teacher teacher;
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        if (mAuth != null){
-//            mAuth.signOut();
-//        }
-//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,8 +100,8 @@ public class HomeActivity extends AppCompatActivity implements ClassAdapter.OnAd
         classesQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                classesList.clear();
                 if (snapshot.exists()){
-                    classesList.clear();
                     for (DataSnapshot snap: snapshot.getChildren()){
                         Class classObj = snap.getValue(Class.class);
                         classesList.add(classObj);
@@ -116,7 +109,6 @@ public class HomeActivity extends AppCompatActivity implements ClassAdapter.OnAd
                     Log.d(TAG, "onDataChange: " + classesList.size());
                 } else {
                     Log.d(TAG, "onDataChange: No classes found!");
-                    classesList.clear();
                 }
                 classesList.add(new Class("dummy", "", "", ""));
                 classAdapter.notifyDataSetChanged();
@@ -133,27 +125,24 @@ public class HomeActivity extends AppCompatActivity implements ClassAdapter.OnAd
     private void getTeacherOrStudent() {
         if (getIntent().getExtras().getByte("origin") == Utils.STUDENT_DATA){
             student = getIntent().getExtras().getParcelable("studentData");
-            tvName.setText(student.getStudentName());
+            tvName.setText(student.getStudentName() + " (Student)");
             tvNavInitialChar.setText(String.valueOf(student.getStudentName().charAt(0)));
-            tvNavName.setText(student.getStudentName());
+            tvNavName.setText(student.getStudentName()  + " (Student)");
             tvNavMobile.setText(student.getMobile());
             tvNavEmail.setText(student.getEmail());
         } else if(getIntent().getExtras().getByte("origin") == Utils.TEACHER_DATA) {
             teacher = getIntent().getExtras().getParcelable("teacherData");
-            tvName.setText(teacher.getTeacherName());
+            tvName.setText(teacher.getTeacherName()  + " (Teacher)");
 
             tvNavInitialChar.setText(String.valueOf(teacher.getTeacherName().charAt(0)));
-            tvNavName.setText(teacher.getTeacherName());
+            tvNavName.setText(teacher.getTeacherName() + " (Teacher)");
             tvNavMobile.setText(teacher.getMobile());
             tvNavEmail.setText(teacher.getEmail());
         }
     }
 
     private void setupRV() {
-        if(classesNames.length <= 0){
-            return;
-        }
-        classAdapter = new ClassAdapter(classesList, this::onAddClassClick, this::onClassCardClick);
+        classAdapter = new ClassAdapter(classesList, this, this);
         rvClassesList.setAdapter(classAdapter);
         rvClassesList.setLayoutManager(new GridLayoutManager(this, 2));
     }
@@ -189,8 +178,11 @@ public class HomeActivity extends AppCompatActivity implements ClassAdapter.OnAd
         return super.onOptionsItemSelected(item);
     }
 
+//    rv cards click methods (interface methods)
+
     @Override
     public void onAddClassClick(int position) {
+//            click method for add class card
         if (teacher == null){
             Toast.makeText(this, "Teacher details not found! Please restart the app!", Toast.LENGTH_SHORT).show();
             return;
@@ -201,11 +193,50 @@ public class HomeActivity extends AppCompatActivity implements ClassAdapter.OnAd
 
     @Override
     public void onClassCardClick(int position) {
-        Intent intent = new Intent(HomeActivity.this, QuizListActivity.class);
-        intent.putExtra("classInviteCode", classesList.get(position).getInviteCode());
-        intent.putExtra("classTitle", classesList.get(position).getClassTitle());
-        startActivity(intent);
+//                click method for class card
+                Intent intent = new Intent(HomeActivity.this, QuizListActivity.class);
+                intent.putExtra("classInviteCode", classesList.get(position).getInviteCode());
+                intent.putExtra("classTitle", classesList.get(position).getClassTitle());
+                startActivity(intent);
+//        Toast.makeText(HomeActivity.this, "Card: "+ position, Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void onDeleteClassClick(int position) {
+        Class classObjToDelete = classesList.get(position);
+        FirebaseDatabase.getInstance()
+                .getReference("Classes")
+                .child(classObjToDelete.getInviteCode())
+                .removeValue((error, ref) -> {
+           if (error == null){
+               FirebaseDatabase.getInstance()
+                       .getReference("inviteCodes")
+                       .child(classObjToDelete.getInviteCode())
+                       .removeValue((error1, ref1) -> {
+                           if (error1 == null){
+                               Toast.makeText(this, "Class Deleted Successfully!", Toast.LENGTH_SHORT).show();
+                           } else {
+                               Toast.makeText(this, error1.getMessage(), Toast.LENGTH_SHORT).show();
+                           }
+                       });
+
+           } else {
+               Toast.makeText(this, error.getMessage(), Toast.LENGTH_SHORT).show();
+           }
+        });
+        Toast.makeText(HomeActivity.this, "Delete: "+ position, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onEditClassClick(int position) {
+        if (teacher == null){
+            Toast.makeText(this, "Teacher details not found! Please restart the app!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        NewClassDialog newClassDialog = new NewClassDialog(this, teacher, classesList.get(position).getClassTitle(), classesList.get(position).getInviteCode());
+        newClassDialog.show(getSupportFragmentManager(), "Edit Class");
+    }
+
 
 
 }

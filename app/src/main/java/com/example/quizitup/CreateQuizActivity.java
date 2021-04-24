@@ -101,7 +101,6 @@ public class CreateQuizActivity extends AppCompatActivity implements QuestionAda
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()){
                             quizData = snapshot.getValue(Class.Quiz.class);
-                            questionsList = quizData.getQuestionMap();
                             etQuizTitle.setText(quizData.getQuizTitle());
                             etQuizDuration.setText(quizData.getDuration());
                             int spinnerPosition = 0;
@@ -111,9 +110,15 @@ public class CreateQuizActivity extends AppCompatActivity implements QuestionAda
                                 }
                             }
                             spinnerStatus.setSelection(spinnerPosition);
-                            tvQueCount.setText(String.valueOf(questionsList.size()));
-                            tvNoQuestions.setVisibility(View.GONE);
-                            rvQuestionsList.setVisibility(View.VISIBLE);
+
+                            if (quizData.getQuestionMap() == null || quizData.getQuestionMap().size() == 0){
+                                tvQueCount.setText("0");
+                            } else {
+                                questionsList = quizData.getQuestionMap();
+                                tvQueCount.setText(String.valueOf(questionsList.size()));
+                                tvNoQuestions.setVisibility(View.GONE);
+                                rvQuestionsList.setVisibility(View.VISIBLE);
+                            }
                         }
                         setupRV();
                     }

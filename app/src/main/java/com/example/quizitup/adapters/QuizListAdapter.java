@@ -1,5 +1,6 @@
 package com.example.quizitup.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,8 +56,13 @@ public class QuizListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 //            this is any item other than last
             Class.Quiz quizData = quizList.get(position + "_id");
             ((QuizCardViewHolder)holder).tvQuizTitle.setText(quizData.getQuizTitle());
-            ((QuizCardViewHolder)holder).tvQuestionsCount.setText("Questions: " + quizData.getQuestionMap().size());
             ((QuizCardViewHolder)holder).tvQuizStatus.setText(quizData.getStatus());
+
+            if (quizData.getQuestionMap() == null || quizData.getQuestionMap().size() == 0){
+                ((QuizCardViewHolder)holder).tvQuestionsCount.setText("Questions: 0");
+            } else {
+                ((QuizCardViewHolder)holder).tvQuestionsCount.setText("Questions: " + quizData.getQuestionMap().size());
+            }
 
             if (quizData.getStatus().equals("Create Mode")){
                 ((QuizCardViewHolder) holder).imgQuizStatus.setImageResource(R.drawable.ic_baseline_pending_24);

@@ -27,7 +27,6 @@ public class QuizListActivity extends AppCompatActivity implements QuizListAdapt
     private RecyclerView rvQuizList;
 
     private String classInviteCode;
-    private Class classData;
     private Map<String, Class.Quiz> quizzesList = new HashMap<>();
     QuizListAdapter adapter;
 

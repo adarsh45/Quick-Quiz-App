@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="Class Title"
-        android:textColor="@color/gray"
+        android:textColor="@color/main_blue"
         android:textSize="22sp"
         android:layout_marginVertical="16dp"
         app:layout_constraintEnd_toEndOf="parent"

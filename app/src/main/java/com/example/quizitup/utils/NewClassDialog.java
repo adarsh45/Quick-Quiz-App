@@ -64,12 +64,20 @@ public class NewClassDialog extends DialogFragment {
     TextView tvCode;
     ImageView imgShareCode, imgCopyCode;
     LinearLayout layoutInviteCode;
+    String classTitle, classInviteCode;
 
     Teacher teacher;
 
     public NewClassDialog(Activity activity, Teacher teacher){
         this.activity = activity;
         this.teacher = teacher;
+    }
+
+    public NewClassDialog(Activity activity, Teacher teacher, String classTitle, String classInviteCode){
+        this.activity = activity;
+        this.teacher = teacher;
+        this.classTitle = classTitle;
+        this.classInviteCode = classInviteCode;
     }
 
     @Override
@@ -105,6 +113,13 @@ public class NewClassDialog extends DialogFragment {
         imgShareCode = view.findViewById(R.id.img_share_code);
         imgCopyCode = view.findViewById(R.id.img_copy_code);
         layoutInviteCode = view.findViewById(R.id.layout_copy_code);
+
+        if (classInviteCode != null && !TextUtils.isEmpty(classInviteCode) && classTitle != null && !TextUtils.isEmpty(classTitle)){
+            btnGenerateCode.setEnabled(false);
+            layoutInviteCode.setVisibility(View.VISIBLE);
+            tvCode.setText(classInviteCode);
+            etClassTitle.setText(classTitle);
+        }
     }
 
     private void generateCode() {
@@ -153,25 +168,15 @@ public class NewClassDialog extends DialogFragment {
                             Teacher.ClassCreated classCreated = new Teacher.ClassCreated(inviteCode);
                             HashMap<String, Teacher.ClassCreated> classCreatedHashMap = new HashMap<>();
                             classCreatedHashMap.put(inviteCode, classCreated);
-                            
-                            teacher.setClassCreatedMap(classCreatedHashMap);
-                            teacherRef.setValue(teacher)
-                                    .addOnCompleteListener(taskComplete-> {
-                                        if (taskComplete.isSuccessful()){
-                                            Log.d(TAG, "onDataChange: Teacher updated!");
-                                            Class classObj = new Class(inviteCode, etClassTitle.getText().toString(), teacher.getTeacherId(), teacher.getTeacherName());
-                                            classesRef.child(inviteCode).setValue(classObj)
-                                                    .addOnCompleteListener(taskClass-> {
-                                                        layoutLoading.setVisibility(View.GONE);
-                                                        if (taskClass.isSuccessful()){
-                                                            Log.d(TAG, "onDataChange: CLASS NODE UPDATED!");
-                                                        } else {
-                                                            Log.d(TAG, "onDataChange: CLASS NODE NOT UPDATED");
-                                                        }
-                                                    });
+
+                            Class classObj = new Class(inviteCode, etClassTitle.getText().toString(), teacher.getTeacherId(), teacher.getTeacherName());
+                            classesRef.child(inviteCode).setValue(classObj)
+                                    .addOnCompleteListener(taskClass-> {
+                                        layoutLoading.setVisibility(View.GONE);
+                                        if (taskClass.isSuccessful()){
+                                            Log.d(TAG, "onDataChange: CLASS NODE UPDATED!");
                                         } else {
-                                            layoutLoading.setVisibility(View.GONE);
-                                            Log.d(TAG, "onDataChange: Teacher details not updated!");
+                                            Log.d(TAG, "onDataChange: CLASS NODE NOT UPDATED");
                                         }
                                     });
                         } else {
