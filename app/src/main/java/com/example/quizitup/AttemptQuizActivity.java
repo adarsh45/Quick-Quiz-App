@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -53,6 +54,9 @@ public class AttemptQuizActivity extends AppCompatActivity implements QuestionAt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attempt_quiz);
+
+//      back buton in action bar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 //        disabling the screenshot
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
@@ -272,5 +276,16 @@ public class AttemptQuizActivity extends AppCompatActivity implements QuestionAt
             Class.Question question = questionHashMap.get(position + "_id");
             answeredQuestionHashMap.put(position + "_id", new Student.AnsweredQuestion(position + "_id", question.getOption4(), question.getCorrectOption()));
         }
+    }
+
+    //    back buton in action bar
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

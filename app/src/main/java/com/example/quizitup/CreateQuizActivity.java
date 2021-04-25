@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -51,6 +52,9 @@ public class CreateQuizActivity extends AppCompatActivity implements QuestionAda
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_quiz);
 
+//      back button in action bar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         initViews();
         getClassData();
 
@@ -86,8 +90,8 @@ public class CreateQuizActivity extends AppCompatActivity implements QuestionAda
         });
 
         btnShowSubmissions.setOnClickListener(v-> {
-//            TODO: redirect to submissions activity
-            Intent intent = new Intent();
+//            redirect to submissions activity
+            Intent intent = new Intent(CreateQuizActivity.this, SubmissionsActivity.class);
             intent.putExtra("classInviteCode", classInviteCode);
             intent.putExtra("quizId", quizId);
             startActivity(intent);
@@ -166,5 +170,16 @@ public class CreateQuizActivity extends AppCompatActivity implements QuestionAda
     public void onQuestionClick(int position) {
         QuestionDialog questionDialog = new QuestionDialog(this, position, questionsList.get(position + "_id"));
         questionDialog.show(getSupportFragmentManager(),"Edit Question");
+    }
+
+//    back button in action bar
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
