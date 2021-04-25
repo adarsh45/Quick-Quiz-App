@@ -162,6 +162,29 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="8dp">
+
+            <CheckBox
+                android:id="@+id/check_explanation_student"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Show Explanation"/>
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_explanation_student"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:lines="2"
+                android:paddingHorizontal="8dp"/>
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

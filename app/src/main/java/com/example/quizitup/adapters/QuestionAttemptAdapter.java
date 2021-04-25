@@ -1,8 +1,11 @@
 package com.example.quizitup.adapters;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -15,9 +18,7 @@ import com.example.quizitup.R;
 import com.example.quizitup.pojos.Class;
 import com.example.quizitup.pojos.Student;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class QuestionAttemptAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -59,6 +60,7 @@ public class QuestionAttemptAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         Class.Question question = questions.get(position + "_id");
         int quePosition = Integer.parseInt(question.getQuePosition().split("_")[0]) + 1;
         String queTitle = "Q." + quePosition + " " + question.getQueTitle();
+
         if (studentStatus.equals("fresh")){
             QuestionAttemptViewHolder viewHolder = (QuestionAttemptViewHolder) holder;
             viewHolder.tvQueTitle.setText(queTitle);
@@ -69,6 +71,19 @@ public class QuestionAttemptAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         } else {
             ShowAnswerViewHolder viewHolder = (ShowAnswerViewHolder) holder;
             viewHolder.tvQueTitle.setText(queTitle);
+
+            if (question.getExplanation() != null && !TextUtils.isEmpty(question.getExplanation())){
+                viewHolder.tvExplanation.setText(question.getExplanation());
+            }
+
+            //        explanation
+            viewHolder.checkExplanation.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked){
+                    viewHolder.tvExplanation.setVisibility(View.VISIBLE);
+                } else {
+                    viewHolder.tvExplanation.setVisibility(View.GONE);
+                }
+            });
 
             viewHolder.tvOp1.setText(question.getOption1());
             viewHolder.tvOp2.setText(question.getOption2());
@@ -123,6 +138,8 @@ public class QuestionAttemptAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         public TextView tvQueTitle, tvOp1, tvOp2, tvOp3, tvOp4;
         public ImageView imgTick1, imgTick2, imgTick3, imgTick4;
+        public TextView tvExplanation;
+        public CheckBox checkExplanation;
         public ShowAnswerViewHolder(@NonNull View itemView) {
             super(itemView);
             tvQueTitle = itemView.findViewById(R.id.tv_que_title);
@@ -134,6 +151,9 @@ public class QuestionAttemptAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             imgTick2 = itemView.findViewById(R.id.img_tick_2);
             imgTick3 = itemView.findViewById(R.id.img_tick_3);
             imgTick4 = itemView.findViewById(R.id.img_tick_4);
+
+            tvExplanation = itemView.findViewById(R.id.tv_explanation_student);
+            checkExplanation = itemView.findViewById(R.id.check_explanation_student);
         }
     }
 

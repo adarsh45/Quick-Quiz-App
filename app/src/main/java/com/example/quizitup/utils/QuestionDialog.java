@@ -7,8 +7,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -39,6 +42,8 @@ public class QuestionDialog extends DialogFragment {
     Button btnSaveOptions, btnAddQuestion, btnCancelQuestion;
     EditText etQueTitle;
     EditText etOption1, etOption2, etOption3, etOption4;
+    EditText etExplanation;
+    CheckBox checkExplanation;
     Spinner spinnerOptions;
 
     public QuestionDialog(Activity activity, int quePosition){
@@ -68,6 +73,14 @@ public class QuestionDialog extends DialogFragment {
         initViews();
         setupSpinner();
         setTexts();
+
+        checkExplanation.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked){
+                etExplanation.setVisibility(View.VISIBLE);
+            } else {
+                etExplanation.setVisibility(View.GONE);
+            }
+        });
 
         btnSaveOptions.setOnClickListener(v-> {
 //            any one of the four edit texts should be non empty
@@ -102,9 +115,10 @@ public class QuestionDialog extends DialogFragment {
             String option3 = etOption3.getText().toString();
             String option4 = etOption4.getText().toString();
             String correctOption = options.get(spinnerOptions.getSelectedItemPosition());
+            String explanation = TextUtils.isEmpty(etExplanation.getText().toString()) ? "No explanation" : etExplanation.getText().toString();
 
             Log.d(TAG, "onCreateView: KEY: " + quePosition);
-            question = new Class.Question(quePosition + "_id", queTitle,option1,option2,option3, option4,correctOption);
+            question = new Class.Question(quePosition + "_id", queTitle,option1,option2,option3, option4,correctOption, explanation);
             CreateQuizActivity.questionsList.put(quePosition + "_id", question);
             CreateQuizActivity.tvQueCount.setText(String.valueOf(CreateQuizActivity.questionsList.size()));
             CreateQuizActivity.questionAdapter.notifyDataSetChanged();
@@ -134,6 +148,8 @@ public class QuestionDialog extends DialogFragment {
         etOption3 = view.findViewById(R.id.et_option_3);
         etOption4 = view.findViewById(R.id.et_option_4);
         spinnerOptions = view.findViewById(R.id.spinner_all_options);
+        checkExplanation = view.findViewById(R.id.check_explanation);
+        etExplanation = view.findViewById(R.id.et_explanation);
 
         btnSaveOptions = view.findViewById(R.id.btn_save_options);
         btnAddQuestion = view.findViewById(R.id.btn_add_question);
@@ -175,6 +191,9 @@ public class QuestionDialog extends DialogFragment {
                 selectedOption = 3;
             }
             spinnerOptions.setSelection(selectedOption);
+            if (question.getExplanation() != null && !TextUtils.isEmpty(question.getExplanation())){
+                etExplanation.setText(question.getExplanation());
+            }
         }
     }
 }

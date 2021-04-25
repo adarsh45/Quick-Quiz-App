@@ -23,7 +23,6 @@ import com.example.quizitup.pojos.Teacher;
 import com.example.quizitup.utils.NewClassDialog;
 import com.example.quizitup.utils.NewClassStudentDialog;
 import com.example.quizitup.utils.Utils;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -34,10 +33,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class HomeActivity extends AppCompatActivity implements ClassAdapter.OnClassCardClickListener, ClassAdapter.OnAddClassClickListener {
 

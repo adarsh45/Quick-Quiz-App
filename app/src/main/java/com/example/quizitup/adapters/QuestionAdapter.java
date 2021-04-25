@@ -1,9 +1,11 @@
 package com.example.quizitup.adapters;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -54,6 +56,17 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
         holder.imgTick3.setVisibility(View.INVISIBLE);
         holder.imgTick4.setVisibility(View.INVISIBLE);
 
+        if (question.getExplanation() != null && !TextUtils.isEmpty(question.getExplanation())){
+            holder.tvExplanation.setText(question.getExplanation());
+        }
+
+        holder.checkExplanation.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked){
+                holder.tvExplanation.setVisibility(View.VISIBLE);
+            } else {
+                holder.tvExplanation.setVisibility(View.GONE);
+            }
+        });
 
 //        show check mark in front of correct option
         if (question.getCorrectOption().equals(question.getOption1())){
@@ -80,6 +93,8 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
         public OnQuestionClickListener onQuizCardClickListener;
         public TextView tvQueTitle, tvOp1, tvOp2, tvOp3, tvOp4;
         public ImageView imgTick1, imgTick2, imgTick3, imgTick4;
+        public TextView tvExplanation;
+        public CheckBox checkExplanation;
         public QuestionViewHolder(@NonNull View itemView, OnQuestionClickListener onQuestionClickListener) {
             super(itemView);
             this.onQuizCardClickListener = onQuestionClickListener;
@@ -92,6 +107,10 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
             imgTick2 = itemView.findViewById(R.id.img_tick_2);
             imgTick3 = itemView.findViewById(R.id.img_tick_3);
             imgTick4 = itemView.findViewById(R.id.img_tick_4);
+
+            tvExplanation = itemView.findViewById(R.id.tv_explanation_student);
+            checkExplanation = itemView.findViewById(R.id.check_explanation_student);
+
             itemView.setOnClickListener(this);
         }
 

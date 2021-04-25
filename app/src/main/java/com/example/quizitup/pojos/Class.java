@@ -134,11 +134,11 @@ public class Class {
     }
 
     public static class Question {
-        private String quePosition, queTitle, option1, option2, option3, option4, correctOption;
+        private String quePosition, queTitle, option1, option2, option3, option4, correctOption, explanation;
 
         public Question(){}
 
-        public Question(String quePosition, String queTitle, String option1, String option2, String option3, String option4, String correctOption) {
+        public Question(String quePosition, String queTitle, String option1, String option2, String option3, String option4, String correctOption, String explanation) {
             this.quePosition = quePosition;
             this.queTitle = queTitle;
             this.option1 = option1;
@@ -146,6 +146,7 @@ public class Class {
             this.option3 = option3;
             this.option4 = option4;
             this.correctOption = correctOption;
+            this.explanation = explanation;
         }
 
         public String getQuePosition() {
@@ -204,6 +205,13 @@ public class Class {
             this.correctOption = correctOption;
         }
 
+        public String getExplanation() {
+            return explanation;
+        }
+
+        public void setExplanation(String explanation) {
+            this.explanation = explanation;
+        }
     }
 
 }
