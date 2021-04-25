@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,17 +12,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.quizitup.R;
 import com.example.quizitup.pojos.Class;
+import com.example.quizitup.utils.Utils;
 
 import java.util.List;
 
 public class ClassAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<Class> classes;
+    private byte origin;
     private OnAddClassClickListener onAddClassClickListener;
     private OnClassCardClickListener onClassCardClickListener;
 
-    public ClassAdapter(List<Class> classes, OnAddClassClickListener onAddClassClickListener, OnClassCardClickListener onClassCardClickListener){
+    public ClassAdapter(List<Class> classes, byte origin, OnAddClassClickListener onAddClassClickListener, OnClassCardClickListener onClassCardClickListener){
         this.classes = classes;
+        this.origin = origin;
         this.onAddClassClickListener = onAddClassClickListener;
         this.onClassCardClickListener = onClassCardClickListener;
     }
@@ -53,12 +57,27 @@ public class ClassAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if(holder.getItemViewType() != 0){
 //            this is any item other than last
             Class classObj = classes.get(position);
-            ((ClassCardViewHolder) holder).tvClassTitle.setText(classObj.getClassTitle());
-            if (classObj.getStudentsEnrolledMap() == null || classObj.getStudentsEnrolledMap().size() == 0){
-                ((ClassCardViewHolder) holder).tvStudentsCount.setText("0");
-            } else {
-                ((ClassCardViewHolder) holder).tvStudentsCount.setText(String.valueOf(classObj.getStudentsEnrolledMap().size()));
+
+            if (origin == Utils.TEACHER_DATA){
+                ((ClassCardViewHolder) holder).layoutStudent.setVisibility(View.VISIBLE);
+                ((ClassCardViewHolder) holder).layoutTeacher.setVisibility(View.GONE);
+
+                if (classObj.getStudentsEnrolledMap() == null || classObj.getStudentsEnrolledMap().size() == 0){
+                    ((ClassCardViewHolder) holder).tvStudentsCount.setText("0");
+                } else {
+                    ((ClassCardViewHolder) holder).tvStudentsCount.setText(String.valueOf(classObj.getStudentsEnrolledMap().size()));
+                }
+
+            }else if (origin == Utils.STUDENT_DATA){
+                ((ClassCardViewHolder) holder).layoutStudent.setVisibility(View.GONE);
+                ((ClassCardViewHolder) holder).layoutTeacher.setVisibility(View.VISIBLE);
+                ((ClassCardViewHolder) holder).tvTeacherName.setText(classObj.getTeacherName());
+
+                ((ClassCardViewHolder) holder).imgDeleteClass.setVisibility(View.GONE);
+                ((ClassCardViewHolder) holder).imgEditClass.setVisibility(View.GONE);
             }
+
+            ((ClassCardViewHolder) holder).tvClassTitle.setText(classObj.getClassTitle());
             if (classObj.getQuizzesMap() == null || classObj.getQuizzesMap().size() == 0){
                 ((ClassCardViewHolder) holder).tvQuizzesCount.setText("0");
             } else {
@@ -76,17 +95,22 @@ public class ClassAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public static class ClassCardViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         public OnClassCardClickListener onClassCardClickListener;
-        public TextView tvClassTitle, tvStudentsCount, tvQuizzesCount;
+        public TextView tvClassTitle, tvStudentsCount, tvQuizzesCount, tvTeacherName;
         public ImageView imgEditClass, imgDeleteClass;
+        public LinearLayout layoutStudent, layoutTeacher;
         public ClassCardViewHolder(@NonNull View itemView, OnClassCardClickListener onClassCardClickListener) {
             super(itemView);
             this.onClassCardClickListener = onClassCardClickListener;
             tvClassTitle = itemView.findViewById(R.id.tv_class_title);
             tvStudentsCount = itemView.findViewById(R.id.tv_students_enrolled);
             tvQuizzesCount = itemView.findViewById(R.id.tv_total_quizzes);
+            tvTeacherName = itemView.findViewById(R.id.tv_teacher_name);
 
             imgEditClass = itemView.findViewById(R.id.img_edit_class);
             imgDeleteClass = itemView.findViewById(R.id.img_delete_class);
+
+            layoutStudent = itemView.findViewById(R.id.layout_student);
+            layoutTeacher = itemView.findViewById(R.id.layout_teacher);
 
             itemView.setOnClickListener(this);
             imgEditClass.setOnClickListener(this);

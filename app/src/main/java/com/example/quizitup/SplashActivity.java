@@ -65,15 +65,11 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
-                    Student student = new Student();
-                    for (DataSnapshot snap: snapshot.getChildren()){
-                        student = snap.getValue(Student.class);
-                    }
+                    Student student = snapshot.getValue(Student.class);
                     Log.d(TAG, "onDataChange: " + snapshot.toString());
                     splashIntent = new Intent(SplashActivity.this, HomeActivity.class);
                     splashIntent.putExtra("origin", Utils.STUDENT_DATA);
                     Log.d(TAG, "onDataChange: " + student.getStudentName());
-                    splashIntent.putExtra("studentData", student);
                     startActivity(splashIntent);
                     finish();
                 } else {
@@ -82,22 +78,17 @@ public class SplashActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if (snapshot.exists()){
-                                Teacher teacher = new Teacher();
-                                for (DataSnapshot snap: snapshot.getChildren()){
-                                    teacher = snap.getValue(Teacher.class);
-                                }
+                                Teacher teacher = snapshot.getValue(Teacher.class);
                                 Log.d(TAG, "onDataChange: " + snapshot.toString());
                                 splashIntent = new Intent(SplashActivity.this, HomeActivity.class);
                                 splashIntent.putExtra("origin", Utils.TEACHER_DATA);
                                 Log.d(TAG, "onDataChange: " + teacher.getTeacherName());
-                                splashIntent.putExtra("teacherData", teacher);
-                                startActivity(splashIntent);
                             } else {
                                 Log.d(TAG, "onDataChange: TEACHER SNAPSHOT DOESN'T EXISTS!");
                                 Log.d(TAG, "onDataChange: STUDENT SNAPSHOT DOESN'T EXISTS!");
                                 splashIntent = new Intent(SplashActivity.this, ProfileActivity.class);
-                                startActivity(splashIntent);
                             }
+                            startActivity(splashIntent);
                             finish();
                         }
 

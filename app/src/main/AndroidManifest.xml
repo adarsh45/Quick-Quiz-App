@@ -10,7 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QuizItUp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".SplashActivity" android:theme="@style/SplashTheme">
+        <activity android:name=".SubmissionsActivity"></activity>
+        <activity android:name=".AttemptQuizActivity" />
+        <activity
+            android:name=".SplashActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,7 +27,7 @@
         <activity android:name=".HomeActivity" />
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/Theme.Design.NoActionBar"/>
+            android:theme="@style/Theme.Design.NoActionBar" />
     </application>
 
 </manifest>

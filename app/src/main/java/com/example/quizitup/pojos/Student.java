@@ -1,19 +1,16 @@
 package com.example.quizitup.pojos;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.HashMap;
 
 @IgnoreExtraProperties
-public class Student implements Parcelable {
+public class Student {
 
     private String studentId, studentName, email, mobile;
-    private HashMap<String, String> enrolledClasses;
-    private HashMap<String, AttemptedQuiz> attemptedQuizzesMap;
-
+    private HashMap<String, Boolean> enrolledClasses;
+//                  classId         quizId    questions[]->questionId
+    private HashMap<String, HashMap<String, AttemptedQuiz>> attemptedQuizzesMap;
 
     public Student(){}
 
@@ -24,7 +21,7 @@ public class Student implements Parcelable {
         this.mobile = mobile;
     }
 
-    public Student(String studentId, String studentName, String mobile, String email, HashMap<String, String> enrolledClasses, HashMap<String, AttemptedQuiz> attemptedQuizzesMap) {
+    public Student(String studentId, String studentName, String mobile, String email, HashMap<String, Boolean> enrolledClasses, HashMap<String, HashMap<String, AttemptedQuiz>> attemptedQuizzesMap) {
         this.studentId = studentId;
         this.studentName = studentName;
         this.mobile = mobile;
@@ -32,8 +29,6 @@ public class Student implements Parcelable {
         this.enrolledClasses = enrolledClasses;
         this.attemptedQuizzesMap = attemptedQuizzesMap;
     }
-
-
 
     public String getStudentId() {
         return studentId;
@@ -67,25 +62,27 @@ public class Student implements Parcelable {
         this.mobile = mobile;
     }
 
-    public HashMap<String, String> getEnrolledClasses() {
+    public HashMap<String, Boolean> getEnrolledClasses() {
         return enrolledClasses;
     }
 
-    public void setEnrolledClasses(HashMap<String, String> enrolledClasses) {
+    public void setEnrolledClasses(HashMap<String, Boolean> enrolledClasses) {
         this.enrolledClasses = enrolledClasses;
     }
 
-    public HashMap<String, AttemptedQuiz> getAttemptedQuizzesMap() {
+    public HashMap<String, HashMap<String, AttemptedQuiz>> getAttemptedQuizzesMap() {
         return attemptedQuizzesMap;
     }
 
-    public void setAttemptedQuizzesMap(HashMap<String, AttemptedQuiz> attemptedQuizzesMap) {
+    public void setAttemptedQuizzesMap(HashMap<String, HashMap<String, AttemptedQuiz>> attemptedQuizzesMap) {
         this.attemptedQuizzesMap = attemptedQuizzesMap;
     }
 
-    public class AttemptedQuiz{
+    public static class AttemptedQuiz{
         private String quizId, score;
         private HashMap<String, AnsweredQuestion> questionsMap;
+
+        public AttemptedQuiz(){}
 
         public AttemptedQuiz(String quizId, String score, HashMap<String, AnsweredQuestion> questionsMap) {
             this.quizId = quizId;
@@ -118,7 +115,7 @@ public class Student implements Parcelable {
         }
     }
 
-    public class AnsweredQuestion{
+    public static class AnsweredQuestion{
         private String quePosition, selectedOption, correctOption;
 
         public AnsweredQuestion(){}
@@ -154,48 +151,5 @@ public class Student implements Parcelable {
         }
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.studentId);
-        dest.writeString(this.studentName);
-        dest.writeString(this.email);
-        dest.writeString(this.mobile);
-        dest.writeSerializable(this.enrolledClasses);
-        dest.writeSerializable(this.attemptedQuizzesMap);
-    }
-
-    public void readFromParcel(Parcel source) {
-        this.studentId = source.readString();
-        this.studentName = source.readString();
-        this.email = source.readString();
-        this.mobile = source.readString();
-        this.enrolledClasses = (HashMap<String, String>) source.readSerializable();
-        this.attemptedQuizzesMap = (HashMap<String, AttemptedQuiz>) source.readSerializable();
-    }
-
-    protected Student(Parcel in) {
-        this.studentId = in.readString();
-        this.studentName = in.readString();
-        this.email = in.readString();
-        this.mobile = in.readString();
-        this.enrolledClasses = (HashMap<String, String>) in.readSerializable();
-        this.attemptedQuizzesMap = (HashMap<String, AttemptedQuiz>) in.readSerializable();
-    }
-
-    public static final Parcelable.Creator<Student> CREATOR = new Parcelable.Creator<Student>() {
-        @Override
-        public Student createFromParcel(Parcel source) {
-            return new Student(source);
-        }
-
-        @Override
-        public Student[] newArray(int size) {
-            return new Student[size];
-        }
-    };
 }

@@ -186,7 +186,6 @@ public class LoginActivity extends AppCompatActivity {
                     Intent homeIntent = new Intent(LoginActivity.this, HomeActivity.class);
                     homeIntent.putExtra("origin", Utils.STUDENT_DATA);
                     Log.d(TAG, "onDataChange: " + student.getStudentName());
-                    homeIntent.putExtra("studentData", student);
                     startActivity(homeIntent);
                     finish();
                 } else {
@@ -204,16 +203,14 @@ public class LoginActivity extends AppCompatActivity {
                                 Intent homeIntent = new Intent(LoginActivity.this, HomeActivity.class);
                                 homeIntent.putExtra("origin", Utils.TEACHER_DATA);
                                 Log.d(TAG, "onDataChange: " + teacher.getTeacherName());
-                                homeIntent.putExtra("teacherData", teacher);
                                 startActivity(homeIntent);
-                                finish();
                             } else {
                                 Log.d(TAG, "onDataChange: TEACHER SNAPSHOT DOESN'T EXISTS!");
                                 Log.d(TAG, "onDataChange: STUDENT SNAPSHOT DOESN'T EXISTS!");
                                 Intent profileIntent = new Intent(LoginActivity.this, ProfileActivity.class);
                                 startActivity(profileIntent);
-                                finish();
                             }
+                            finish();
                         }
 
                         @Override

@@ -76,7 +76,6 @@ public class ProfileActivity extends AppCompatActivity {
                 Intent homeIntent = new Intent(ProfileActivity.this, HomeActivity.class);
                 homeIntent.putExtra("origin", Utils.STUDENT_DATA);
                 Log.d(TAG, "onDataChange: " + student.getStudentName());
-                homeIntent.putExtra("studentData", student);
                 startActivity(homeIntent);
                 startActivity(homeIntent);
                 finish();
@@ -97,7 +96,6 @@ public class ProfileActivity extends AppCompatActivity {
                 Intent homeIntent = new Intent(ProfileActivity.this, HomeActivity.class);
                 homeIntent.putExtra("origin", Utils.TEACHER_DATA);
                 Log.d(TAG, "onDataChange: " + teacher.getTeacherName());
-                homeIntent.putExtra("teacherData", teacher);
                 startActivity(homeIntent);
                 startActivity(homeIntent);
                 finish();

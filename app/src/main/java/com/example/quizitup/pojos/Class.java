@@ -9,7 +9,7 @@ public class Class {
 
     private String inviteCode, classTitle, createdBy, teacherName;
     private Map<String, Quiz> quizzesMap;
-    private Map<String, String> studentsEnrolledMap;
+    private Map<String, Boolean> studentsEnrolledMap;
 
     public Class(){}
 
@@ -20,7 +20,7 @@ public class Class {
         this.teacherName = teacherName;
     }
 
-    public Class(String inviteCode, String classTitle, String createdBy, String teacherName, Map<String, Quiz> quizzesMap, Map<String, String> studentsEnrolledMap) {
+    public Class(String inviteCode, String classTitle, String createdBy, String teacherName, Map<String, Quiz> quizzesMap, Map<String, Boolean> studentsEnrolledMap) {
         this.inviteCode = inviteCode;
         this.classTitle = classTitle;
         this.createdBy = createdBy;
@@ -69,11 +69,11 @@ public class Class {
         this.quizzesMap = quizzesMap;
     }
 
-    public Map<String, String> getStudentsEnrolledMap() {
+    public Map<String, Boolean> getStudentsEnrolledMap() {
         return studentsEnrolledMap;
     }
 
-    public void setStudentsEnrolledMap(Map<String, String> studentsEnrolledMap) {
+    public void setStudentsEnrolledMap(Map<String, Boolean> studentsEnrolledMap) {
         this.studentsEnrolledMap = studentsEnrolledMap;
     }
 

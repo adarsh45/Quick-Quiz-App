@@ -44,6 +44,8 @@
                     />
 
                 <LinearLayout
+                    android:id="@+id/layout_student"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -65,6 +67,27 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="78"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_teacher"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_baseline_person_pin_24"
+                        android:padding="2dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_teacher_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Mr. Rahul Pawar"/>
 
                 </LinearLayout>
                 <LinearLayout

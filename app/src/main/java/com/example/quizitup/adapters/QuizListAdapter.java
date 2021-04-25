@@ -12,18 +12,28 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.quizitup.R;
 import com.example.quizitup.pojos.Class;
+import com.example.quizitup.utils.Utils;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class QuizListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Map<String, Class.Quiz> quizList;
+    private byte origin;
+    private String studentId;
+    private String classInviteCode;
     private OnAddQuizClickListener onAddQuizClickListener;
     private OnQuizCardClickListener onQuizCardClickListener;
 
-    public QuizListAdapter(Map<String, Class.Quiz> quizList, OnAddQuizClickListener onAddQuizClickListener, OnQuizCardClickListener onQuizCardClickListener){
+    public QuizListAdapter(Map<String, Class.Quiz> quizList, byte origin, String studentId, String classInviteCode, OnAddQuizClickListener onAddQuizClickListener, OnQuizCardClickListener onQuizCardClickListener){
         this.quizList = quizList;
+        this.origin = origin;
+        this.studentId = studentId;
+        this.classInviteCode = classInviteCode;
         this.onAddQuizClickListener = onAddQuizClickListener;
         this.onQuizCardClickListener = onQuizCardClickListener;
     }
@@ -55,8 +65,45 @@ public class QuizListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if(holder.getItemViewType() != 0){
 //            this is any item other than last
             Class.Quiz quizData = quizList.get(position + "_id");
+
+            if (origin == Utils.STUDENT_DATA){
+                FirebaseDatabase.getInstance()
+                        .getReference("Students").child(studentId)
+                        .child("attemptedQuizzesMap").child(classInviteCode)
+                        .child(position + "_id")
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if (snapshot.exists()){
+                                    ((QuizCardViewHolder)holder).tvQuizStatus.setText("Submitted");
+                                    ((QuizCardViewHolder) holder).imgQuizStatus.setImageResource(R.drawable.ic_check_circle_solid);
+                                } else {
+                                    ((QuizCardViewHolder)holder).tvQuizStatus.setText("Pending");
+                                    ((QuizCardViewHolder) holder).imgQuizStatus.setImageResource(R.drawable.ic_baseline_pending_24);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                Log.d("TAG", "onCancelled: " + error.getMessage());
+                            }
+                        });
+
+            } else if (origin == Utils.TEACHER_DATA){
+                ((QuizCardViewHolder)holder).tvQuizStatus.setText(quizData.getStatus());
+
+                if (quizData.getStatus().equals("Create Mode")){
+                    ((QuizCardViewHolder) holder).imgQuizStatus.setImageResource(R.drawable.ic_baseline_pending_24);
+                }
+                if (quizData.getStatus().equals("Published")){
+                    ((QuizCardViewHolder) holder).imgQuizStatus.setImageResource(R.drawable.ic_check_circle_solid);
+                }
+                if (quizData.getStatus().equals("Closed")){
+                    ((QuizCardViewHolder) holder).imgQuizStatus.setImageResource(R.drawable.ic_baseline_cancel_24);
+                }
+            }
+
             ((QuizCardViewHolder)holder).tvQuizTitle.setText(quizData.getQuizTitle());
-            ((QuizCardViewHolder)holder).tvQuizStatus.setText(quizData.getStatus());
 
             if (quizData.getQuestionMap() == null || quizData.getQuestionMap().size() == 0){
                 ((QuizCardViewHolder)holder).tvQuestionsCount.setText("Questions: 0");
@@ -64,15 +111,8 @@ public class QuizListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 ((QuizCardViewHolder)holder).tvQuestionsCount.setText("Questions: " + quizData.getQuestionMap().size());
             }
 
-            if (quizData.getStatus().equals("Create Mode")){
-                ((QuizCardViewHolder) holder).imgQuizStatus.setImageResource(R.drawable.ic_baseline_pending_24);
-            }
-            if (quizData.getStatus().equals("Published")){
-                ((QuizCardViewHolder) holder).imgQuizStatus.setImageResource(R.drawable.ic_check_circle_solid);
-            }
-            if (quizData.getStatus().equals("Closed")){
-                ((QuizCardViewHolder) holder).imgQuizStatus.setImageResource(R.drawable.ic_baseline_cancel_24);
-            }
+        } else if(origin == Utils.STUDENT_DATA){
+            holder.itemView.setVisibility(View.GONE);
         }
     }
 

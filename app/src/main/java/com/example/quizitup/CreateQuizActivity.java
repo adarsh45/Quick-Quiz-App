@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -35,7 +36,7 @@ public class CreateQuizActivity extends AppCompatActivity implements QuestionAda
     private EditText etQuizTitle, etQuizDuration;
     public static TextView tvQueCount, tvNoQuestions;
     private Spinner spinnerStatus;
-    private Button btnSaveQuiz;
+    private Button btnSaveQuiz, btnShowSubmissions;
     public static RecyclerView rvQuestionsList;
     private FloatingActionButton fabAddQuestion;
 
@@ -82,6 +83,14 @@ public class CreateQuizActivity extends AppCompatActivity implements QuestionAda
                        }
                     });
 
+        });
+
+        btnShowSubmissions.setOnClickListener(v-> {
+//            TODO: redirect to submissions activity
+            Intent intent = new Intent();
+            intent.putExtra("classInviteCode", classInviteCode);
+            intent.putExtra("quizId", quizId);
+            startActivity(intent);
         });
 
         fabAddQuestion.setOnClickListener(v-> {
@@ -148,6 +157,7 @@ public class CreateQuizActivity extends AppCompatActivity implements QuestionAda
         tvNoQuestions = findViewById(R.id.tv_no_questions);
         spinnerStatus = findViewById(R.id.spinner_quiz_status);
         btnSaveQuiz = findViewById(R.id.btn_save_quiz);
+        btnShowSubmissions = findViewById(R.id.btn_show_submissions);
         rvQuestionsList = findViewById(R.id.rv_questions_list);
         fabAddQuestion = findViewById(R.id.fab_add_question);
     }

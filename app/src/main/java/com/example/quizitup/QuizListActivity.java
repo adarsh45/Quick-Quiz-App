@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import com.example.quizitup.adapters.QuizListAdapter;
 import com.example.quizitup.pojos.Class;
+import com.example.quizitup.utils.Utils;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -23,12 +25,15 @@ import java.util.Map;
 
 public class QuizListActivity extends AppCompatActivity implements QuizListAdapter.OnAddQuizClickListener, QuizListAdapter.OnQuizCardClickListener {
 
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
     private TextView tvClassHeading;
     private RecyclerView rvQuizList;
 
     private String classInviteCode;
     private Map<String, Class.Quiz> quizzesList = new HashMap<>();
     QuizListAdapter adapter;
+    byte origin;
 
     private static final String TAG = "QuizListActivity";
 
@@ -69,11 +74,12 @@ public class QuizListActivity extends AppCompatActivity implements QuizListAdapt
     private void getClassData() {
         classInviteCode = getIntent().getStringExtra("classInviteCode");
         tvClassHeading.setText(getIntent().getStringExtra("classTitle"));
+        origin = getIntent().getByteExtra("origin", (byte) 0);
     }
 
     private void setupRV() {
         quizzesList.put("dummy",new Class.Quiz());
-        adapter = new QuizListAdapter(quizzesList,this::onAddQuizClick, this::onQuizClick);
+        adapter = new QuizListAdapter(quizzesList, origin, mAuth.getUid(), classInviteCode, this, this);
         rvQuizList.setAdapter(adapter);
         rvQuizList.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -94,10 +100,23 @@ public class QuizListActivity extends AppCompatActivity implements QuizListAdapt
 
     @Override
     public void onQuizClick(int position) {
-        Intent intent = new Intent(QuizListActivity.this, CreateQuizActivity.class);
-        intent.putExtra("classInviteCode", classInviteCode);
-        intent.putExtra("quizData", position + "_id");
-        Log.d(TAG, "onQuizClick: "  + classInviteCode);
-        startActivity(intent);
+        if (origin == Utils.STUDENT_DATA){
+            Class.Quiz quiz = quizzesList.get(position + "_id");
+            if (quiz.getStatus().equals("Published") || quiz.getStatus().equals("Closed")){
+                Intent intent = new Intent(QuizListActivity.this, AttemptQuizActivity.class);
+                intent.putExtra("classInviteCode", classInviteCode);
+                intent.putExtra("quizData", position + "_id");
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "Quiz is still being created! Wait until it is published!", Toast.LENGTH_SHORT).show();
+            }
+
+        } else if (origin == Utils.TEACHER_DATA){
+            Intent intent = new Intent(QuizListActivity.this, CreateQuizActivity.class);
+            intent.putExtra("classInviteCode", classInviteCode);
+            intent.putExtra("quizData", position + "_id");
+            Log.d(TAG, "onQuizClick: "  + classInviteCode);
+            startActivity(intent);
+        }
     }
 }
