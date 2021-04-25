@@ -23,7 +23,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Create New Class"
+            android:text="Create/Join New Class"
             android:gravity="center"
             android:padding="8dp"
             />

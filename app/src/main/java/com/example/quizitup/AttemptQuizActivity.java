@@ -45,10 +45,44 @@ public class AttemptQuizActivity extends AppCompatActivity implements QuestionAt
     private Button btnStartQuiz, btnEndQuiz;
     private RecyclerView rvAttemptQuizQuestionsList;
 
+    private boolean isExamGoingOn = false;
+
     private QuestionAttemptAdapter adapter;
     private HashMap<String, Student.AnsweredQuestion> answeredQuestionHashMap = new HashMap<>();
     private HashMap<String, Class.Question> questionHashMap = new HashMap<>();
     private String classInviteCode, quizId;
+
+    @Override
+    public void onBackPressed() {
+        if (isExamGoingOn){
+            AlertDialog alertDialog = new AlertDialog.Builder(AttemptQuizActivity.this).create();
+            alertDialog.setTitle("Confirm Exam Submit");
+            alertDialog.setMessage("Are you sure you want to submit the exam ? You won't be able to give this exam again!");
+
+            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "SUBMIT", (dialog, which) -> {
+//            user wants to submit the exam
+
+                Toast.makeText(this, "Exam Ended", Toast.LENGTH_SHORT).show();
+                timer.cancel();
+
+                finishExamAndSaveToDB();
+
+                btnStartQuiz.setVisibility(View.GONE);
+                btnEndQuiz.setEnabled(false);
+                alertDialog.dismiss();
+                super.onBackPressed();
+            });
+
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "CANCEL", (dialog, which) -> {
+//            user want to continue exam, do nothing
+                alertDialog.dismiss();
+            });
+
+            alertDialog.show();
+        } else {
+            super.onBackPressed();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +154,7 @@ public class AttemptQuizActivity extends AppCompatActivity implements QuestionAt
     }
 
     private void startQuiz() {
+        isExamGoingOn = true;
         Toast.makeText(this, "Exam Started", Toast.LENGTH_SHORT).show();
         rvAttemptQuizQuestionsList.setVisibility(View.VISIBLE);
         timer.start();
@@ -283,7 +318,34 @@ public class AttemptQuizActivity extends AppCompatActivity implements QuestionAt
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                this.finish();
+                if (isExamGoingOn){
+                    AlertDialog alertDialog = new AlertDialog.Builder(AttemptQuizActivity.this).create();
+                    alertDialog.setTitle("Confirm Exam Submit");
+                    alertDialog.setMessage("Are you sure you want to submit the exam ? You won't be able to give this exam again!");
+
+                    alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "SUBMIT", (dialog, which) -> {
+//            user wants to submit the exam
+
+                        Toast.makeText(this, "Exam Ended", Toast.LENGTH_SHORT).show();
+                        timer.cancel();
+
+                        finishExamAndSaveToDB();
+
+                        btnStartQuiz.setVisibility(View.GONE);
+                        btnEndQuiz.setEnabled(false);
+                        alertDialog.dismiss();
+                        this.finish();
+                    });
+
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "CANCEL", (dialog, which) -> {
+//            user want to continue exam, do nothing
+                        alertDialog.dismiss();
+                    });
+
+                    alertDialog.show();
+                } else {
+                    this.finish();
+                }
                 return true;
         }
         return super.onOptionsItemSelected(item);
