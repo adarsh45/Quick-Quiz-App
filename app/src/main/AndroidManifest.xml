@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.quizitup">
+    package="com.adarsh45.quizitup">
 
     <application
         android:allowBackup="true"
@@ -10,10 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QuizItUp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".SubmissionsActivity"></activity>
-        <activity android:name=".AttemptQuizActivity" />
+        <activity android:name="com.adarsh45.quizitup.SubmissionsActivity"></activity>
+        <activity android:name="com.adarsh45.quizitup.AttemptQuizActivity" />
         <activity
-            android:name=".SplashActivity"
+            android:name="com.adarsh45.quizitup.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,12 +21,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".QuizListActivity" />
-        <activity android:name=".CreateQuizActivity" />
-        <activity android:name=".HomeActivity" />
+        <activity android:name="com.adarsh45.quizitup.ProfileActivity" />
+        <activity android:name="com.adarsh45.quizitup.QuizListActivity" />
+        <activity android:name="com.adarsh45.quizitup.CreateQuizActivity" />
+        <activity android:name="com.adarsh45.quizitup.HomeActivity" />
         <activity
-            android:name=".LoginActivity"
+            android:name="com.adarsh45.quizitup.LoginActivity"
             android:theme="@style/Theme.Design.NoActionBar" />
     </application>
 

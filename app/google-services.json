@@ -8,6 +8,35 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:338015819559:android:75a797a6357ac8fe343b02",
+        "android_client_info": {
+          "package_name": "com.adarsh45.quizitup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "338015819559-2i7bdn4hg12tj40jblqcnjavrla8414f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByWTTo0X0noU_ixM_xRj7z30ezMrCG2gw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "338015819559-2i7bdn4hg12tj40jblqcnjavrla8414f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:338015819559:android:e240a618ef225b34",
         "android_client_info": {
           "package_name": "com.example.adarsh.quizapp"
@@ -43,6 +72,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "338015819559-sovg11ifn2f3lmqrkeb93mc5nmdhg7mt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.quizitup",
+            "certificate_hash": "5c961e7295a72baba662a3ab093d297a669f7e2a"
+          }
+        },
         {
           "client_id": "338015819559-2i7bdn4hg12tj40jblqcnjavrla8414f.apps.googleusercontent.com",
           "client_type": 3
