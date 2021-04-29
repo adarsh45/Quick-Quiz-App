@@ -73,6 +73,10 @@ public class CreateQuizActivity extends AppCompatActivity implements QuestionAda
                 etQuizTitle.setError("Quiz Title cannot be empty!");
                 return;
             }
+            if(questionsList.isEmpty()){
+                Toast.makeText(this, "Questions List cannot be empty!", Toast.LENGTH_SHORT).show();
+                return;
+            }
             String quizTitle = etQuizTitle.getText().toString();
             String quizDuration = etQuizDuration.getText().toString();
             String quizStatus = quizStatusOptions[spinnerStatus.getSelectedItemPosition()];
