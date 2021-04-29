@@ -52,6 +52,8 @@ public class CreateQuizActivity extends AppCompatActivity implements QuestionAda
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_quiz);
 
+//        clear questions list at start in order to prevent loading of questions from previous quiz
+        questionsList.clear();
 //      back button in action bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
